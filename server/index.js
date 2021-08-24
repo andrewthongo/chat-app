@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const authRouter = require("./routers/auth")
+const authRouter = require("./routers/auth");
+const conversationRouter = require("./routers/conversation");
+const messagesRouter = require("./routers/messages");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -15,7 +17,9 @@ app.use(express.json());
 //app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 app.use(cors());
 
-app.use("/test", authRouter);
+app.use("/auth", authRouter);
+app.use("/conversation", conversationRouter);
+app.use("/messages", messagesRouter);
 
 mongoose
   .connect(URI, {
@@ -33,5 +37,3 @@ mongoose
   .catch((err) => {
     console.log("err", err);
   });
-
-
