@@ -1,6 +1,6 @@
 import React from "react";
 
-function FriendsList() {
+function PeopleList() {
   return (
     <div className="card-content divide-y p-2 flex flex-col gap-y-3 mt-5">
       <div className="card-content-profil flex justify-between items-center">
@@ -147,4 +147,4 @@ function FriendsList() {
   );
 }
 
-export default FriendsList;
+export default PeopleList;

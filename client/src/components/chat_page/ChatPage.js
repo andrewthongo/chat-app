@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ChatBox from "./chat-box/ChatBox";
-import FriendsList from "./friends-list/FriendsList";
+import PeopleList from "./people_list/PeopleList";
 import RecentMessages from "./recent_messages/RecentMessages";
+import { useDispatch, useSelector } from "react-redux";
 
-function Page() {
+function ChatPage() {
+  const dispatch = useDispatch();
+  const { peopleList } = useSelector((state) => state.UsersReducer);
+  useEffect(() => {
+    dispatch({
+      type: "GET_USERS_API",
+    });
+  }, [dispatch]);
   return (
     <div className="container-full w-screen min-h-screen bg-gradient-to-br from-red-500 to-purple-500">
       <div className="relative w-screen">
@@ -15,7 +23,7 @@ function Page() {
         <div className="absolute bottom-40 right-20 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply animate-blob filter blur-xl animation-delay-4000"></div>
         <div className="relative grid grid-cols-12 min-h-screen p-5 gap-4">
           <div className="col-span-3 bg-white backdrop-filter backdrop-blur-lg w-full bg-opacity-20 h-auto rounded-md shadow-2xl">
-            <FriendsList />
+            <PeopleList />
           </div>
           <div className="col-span-3 bg-white backdrop-filter backdrop-blur-lg w-full bg-opacity-20 h-auto rounded-md shadow-2xl">
             <RecentMessages />
@@ -29,4 +37,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default ChatPage;

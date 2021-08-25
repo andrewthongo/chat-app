@@ -22,14 +22,10 @@ export function* LoginTracker() {
 
 function* RegisterSaga(action) {
   try {
-    const { data, status } = yield call(() =>
-      usersService.register(action.data)
-    );
+    const { data } = yield call(() => usersService.register(action.data));
 
-    if (status === 200) {
-      localStorage.setItem(TOKEN, data.accessToken);
-      history.push("/chat-box");
-    }
+    localStorage.setItem(TOKEN, data.accessToken);
+    history.push("/chat-box");
   } catch (error) {
     console.log(error);
   }
@@ -37,4 +33,20 @@ function* RegisterSaga(action) {
 
 export function* RegisterTracker() {
   yield takeLatest("REGISTER_API", RegisterSaga);
+}
+
+export function* GetUsersSaga() {
+  try {
+    const { data } = yield call(() => usersService.getUser());
+    yield put({
+      type: "GET_USERS",
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* GetUsersTracker() {
+  yield takeLatest("GET_USERS_API", GetUsersSaga);
 }

@@ -7,7 +7,9 @@ export class UsersService extends baseService {
   register = (data) => {
     return this.post("/users/register", data);
   };
-  getUser = () => {};
+  getUser = () => {
+    return this.get("/users");
+  };
 }
 
 export const usersService = new UsersService();
