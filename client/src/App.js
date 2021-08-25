@@ -1,13 +1,15 @@
 import "./App.css";
-import Page from "./components/chat_page/Page";
-
+import Page from "./components/login_register_page/Page";
+import ChatBox from "./components/chat_page/Page";
+import { Route, Switch } from "react-router-dom";
 
 function App() {
   return (
-    <div>
-      <Page />
-      
-    </div>
+    <Switch>
+      <Route path="/" component={Page} exact={true} />
+      <Route path="/register" component={Page} exact={true} />
+      <Route path="/chat-box" component={ChatBox} exact={true} />
+    </Switch>
   );
 }
 

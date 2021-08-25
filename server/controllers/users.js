@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 const register = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, name, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
@@ -16,7 +16,7 @@ const register = async (req, res) => {
         .json({ success: false, message: "This username is already taken" });
     }
     bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
-      const newUser = new User({ username, password: hashedPassword });
+      const newUser = new User({ username, name, password: hashedPassword });
       await newUser.save();
 
       const accessToken = jwt.sign(
