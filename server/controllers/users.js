@@ -68,4 +68,17 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const users = async (req, res) => {
+  try {
+    const users = await User.find();
+    let user = [];
+    for (let i = 0; i < users.length; i++) {
+      user.push({ id: users[i]._id, name: users[i].name });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+module.exports = { register, login, users };
