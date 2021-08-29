@@ -28,6 +28,7 @@ const register = async (req, res) => {
         success: true,
         message: "Created",
         accessToken,
+        user,
       });
     });
   } catch (error) {
@@ -61,6 +62,7 @@ const login = async (req, res) => {
         success: true,
         message: "Login successful",
         accessToken,
+        user,
       });
     });
   } catch (error) {

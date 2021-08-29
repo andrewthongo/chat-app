@@ -15,7 +15,7 @@ function RegisterForm() {
     },
     validationSchema: Yup.object({
       password: Yup.string()
-        .min(6, "At least 6 characters")
+        .min(5, "At least 5 characters")
         .required("Required"),
       name: Yup.string().required("Required"),
       username: Yup.string().required("Required"),

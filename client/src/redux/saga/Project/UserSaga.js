@@ -3,14 +3,17 @@ import { TOKEN } from "../../../util/settings/config";
 import { usersService } from "../../../services/UsersService";
 import { history } from "../../../util/history";
 
+
 function* LoginSaga(action) {
   try {
-    const { data, status } = yield call(() => usersService.login(action.data));
+    const { data } = yield call(() => usersService.login(action.data));
 
-    if (status === 200) {
-      localStorage.setItem(TOKEN, data.accessToken);
-      history.push("/chat-box");
-    }
+    localStorage.setItem(TOKEN, data.accessToken);
+    yield put({
+      type: "GET_OWNER_INFO",
+      data,
+    });
+    history.push("/chat-box");
   } catch (error) {
     console.log(error);
   }
@@ -25,6 +28,10 @@ function* RegisterSaga(action) {
     const { data } = yield call(() => usersService.register(action.data));
 
     localStorage.setItem(TOKEN, data.accessToken);
+    yield put({
+      type: "GET_OWNER_INFO",
+      data,
+    });
     history.push("/chat-box");
   } catch (error) {
     console.log(error);
@@ -38,6 +45,7 @@ export function* RegisterTracker() {
 export function* GetUsersSaga() {
   try {
     const { data } = yield call(() => usersService.getUser());
+
     yield put({
       type: "GET_USERS",
       data,

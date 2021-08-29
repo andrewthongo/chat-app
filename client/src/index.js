@@ -4,9 +4,9 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/storeConfig";
+import { history } from "./util/history";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import { history } from "./util/history";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -10,8 +10,48 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 const URI = process.env.DATABASE;
+
+const io = require("socket.io")(7000, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+io.on("connection", (socket) => {
+  console.log(socket.id + " connected");
+
+  socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
+    io.emit("getUsers", users);
+  });
+
+  socket.on("sendMessage", ({ sender, receiverId, text }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("getMessage", { sender, text });
+  });
+
+  socket.on("disconnect", () => {
+    console.log(socket.id + " disconnected");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  });
+});
 
 app.use(express.json());
 app.use(cors());
