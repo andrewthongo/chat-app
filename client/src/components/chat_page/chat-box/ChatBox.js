@@ -2,13 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import {
+  getMessagesAction,
+  sendMessagesAction,
+} from "../../../redux/actions/MessagesAction";
 
 function ChatBox({ messages, ownerInfo, conversation, currentFriend, socket }) {
+  const dispatch = useDispatch();
   const [messagesState, setMessagesState] = useState();
   const [newMessages, setNewMessages] = useState();
-  console.log("🚀 ~ file: ChatBox.js ~ line 7 ~ ChatBox ~ messages", messages);
-  const dispatch = useDispatch();
-  const { conversationName } = useSelector(
+
+  const { conversationInfo } = useSelector(
     (state) => state.ConversationReducer
   );
   const scrollRef = useRef();
@@ -25,20 +29,14 @@ function ChatBox({ messages, ownerInfo, conversation, currentFriend, socket }) {
       text: Yup.string().required(),
     }),
     onSubmit: (values) => {
-      dispatch({
-        type: "SEND_MESSAGES_API",
-        data: values,
-      });
+      dispatch(sendMessagesAction(values));
       socket.current.emit("sendMessage", {
         sender: values.sender,
         receiverId,
         text: values.text,
       });
       setTimeout(() => {
-        dispatch({
-          type: "GET_MESSAGES_API",
-          data: currentFriend,
-        });
+        dispatch(getMessagesAction(currentFriend));
         values.text = "";
       }, 0);
     },
@@ -54,9 +52,12 @@ function ChatBox({ messages, ownerInfo, conversation, currentFriend, socket }) {
   }, [socket]);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     setMessagesState(messages);
   }, [messages]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messagesState]);
 
   useEffect(() => {
     newMessages &&
@@ -84,7 +85,7 @@ function ChatBox({ messages, ownerInfo, conversation, currentFriend, socket }) {
                 alt="1"
               ></img>
               <div className="text-xs">
-                <h3 className="font-semibold">{conversationName?.name}</h3>
+                <h3 className="font-semibold">{conversationInfo?.name}</h3>
                 <div className="flex items-center gap-x-1 bg-indigo-500 rounded-xl backdrop-filter backdrop-blur-xl shadow-md bg-opacity-50">
                   <p className="max-w-xs break-words p-2">{message.text}</p>
                 </div>
@@ -115,7 +116,6 @@ function ChatBox({ messages, ownerInfo, conversation, currentFriend, socket }) {
           <div className="w-2/12 flex justify-center">
             <button
               type="submit"
-              onClick={() => {}}
               className="transform motion-safe:hover:scale-110 w-1/2 py-2 bg-white rounded-xl shadow-md outline-none"
             >
               <i className="fas fa-paper-plane"></i>

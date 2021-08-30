@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { conversationService } from "../../../services/ConversationService";
+import { ADD_CONVERSATION_API, GET_CONVERSATION_API } from "../../constant/ProjectConstant";
 
 function* GetConversationSaga(action) {
   try {
@@ -16,7 +17,7 @@ function* GetConversationSaga(action) {
 }
 
 export function* GetConversationTracker() {
-  yield takeLatest("GET_CONVERSATION_API", GetConversationSaga);
+  yield takeLatest(GET_CONVERSATION_API, GetConversationSaga);
 }
 
 function* AddConversationSaga(action) {
@@ -28,5 +29,5 @@ function* AddConversationSaga(action) {
 }
 
 export function* AddConversationTracker() {
-  yield takeLatest("ADD_CONVERSATION_API", AddConversationSaga);
+  yield takeLatest(ADD_CONVERSATION_API, AddConversationSaga);
 }

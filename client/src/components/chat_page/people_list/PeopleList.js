@@ -1,22 +1,22 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import {
+  addConversationAction,
+  getConversationAction,
+} from "../../../redux/actions/ConservationAction";
 
-function PeopleList({ peopleList, ownerInfo, conversation }) {
+function PeopleList({ peopleList, ownerInfo }) {
   const dispatch = useDispatch();
   const people = peopleList.filter((p) => p.id !== ownerInfo._id);
   const createConversationHandler = (receiverId) => {
-    dispatch({
-      type: "ADD_CONVERSATION_API",
-      data: {
+    dispatch(
+      addConversationAction({
         senderId: ownerInfo._id,
         receiverId,
-      },
-    });
+      })
+    );
     setTimeout(() => {
-      dispatch({
-        type: "GET_CONVERSATION_API",
-        data: ownerInfo,
-      });
+      dispatch(getConversationAction(ownerInfo));
     }, 0);
   };
   const renderPeople = () => {

@@ -2,7 +2,13 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { TOKEN } from "../../../util/settings/config";
 import { usersService } from "../../../services/UsersService";
 import { history } from "../../../util/history";
-
+import {
+  GET_OWNER_INFO,
+  GET_USERS,
+  GET_USERS_API,
+  LOGIN_API,
+  REGISTER_API,
+} from "../../constant/ProjectConstant";
 
 function* LoginSaga(action) {
   try {
@@ -10,7 +16,7 @@ function* LoginSaga(action) {
 
     localStorage.setItem(TOKEN, data.accessToken);
     yield put({
-      type: "GET_OWNER_INFO",
+      type: GET_OWNER_INFO,
       data,
     });
     history.push("/chat-box");
@@ -20,7 +26,7 @@ function* LoginSaga(action) {
 }
 
 export function* LoginTracker() {
-  yield takeLatest("LOGIN_API", LoginSaga);
+  yield takeLatest(LOGIN_API, LoginSaga);
 }
 
 function* RegisterSaga(action) {
@@ -29,7 +35,7 @@ function* RegisterSaga(action) {
 
     localStorage.setItem(TOKEN, data.accessToken);
     yield put({
-      type: "GET_OWNER_INFO",
+      type: GET_OWNER_INFO,
       data,
     });
     history.push("/chat-box");
@@ -39,7 +45,7 @@ function* RegisterSaga(action) {
 }
 
 export function* RegisterTracker() {
-  yield takeLatest("REGISTER_API", RegisterSaga);
+  yield takeLatest(REGISTER_API, RegisterSaga);
 }
 
 export function* GetUsersSaga() {
@@ -47,7 +53,7 @@ export function* GetUsersSaga() {
     const { data } = yield call(() => usersService.getUser());
 
     yield put({
-      type: "GET_USERS",
+      type: GET_USERS,
       data,
     });
   } catch (error) {
@@ -56,5 +62,5 @@ export function* GetUsersSaga() {
 }
 
 export function* GetUsersTracker() {
-  yield takeLatest("GET_USERS_API", GetUsersSaga);
+  yield takeLatest(GET_USERS_API, GetUsersSaga);
 }

@@ -4,6 +4,12 @@ import PeopleList from "./people_list/PeopleList";
 import Conversation from "./conversations/Conversations";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
+import { getUsersAction } from "../../redux/actions/UsersAction";
+import {
+  getConversationAction,
+  setConversationIdAction,
+} from "../../redux/actions/ConservationAction";
+import { getMessagesAction } from "../../redux/actions/MessagesAction";
 
 function ChatPage() {
   const dispatch = useDispatch();
@@ -15,36 +21,17 @@ function ChatPage() {
   const [currentFriend, setCurrentFriend] = useState();
   const socket = useRef();
 
-  console.log(
-    "🚀 ~ file: ChatPage.js ~ line 23 ~ ChatPage ~ conversation",
-    conversation
-  );
-  console.log(
-    "🚀 ~ file: ChatPage.js ~ line 19 ~ ChatPage ~ ownerInfo",
-    ownerInfo
-  );
-
   useEffect(() => {
-    socket.current = io("http://localhost:7000");
+    //socket.current = io("https://thong-chat-app.herokuapp.com/");
+    socket.current = io("http://localhost:5000");
   }, []);
   useEffect(() => {
-    dispatch({
-      type: "GET_USERS_API",
-    });
-    dispatch({
-      type: "GET_CONVERSATION_API",
-      data: ownerInfo,
-    });
+    dispatch(getUsersAction());
+    dispatch(getConversationAction(ownerInfo));
   }, [dispatch, ownerInfo]);
 
   useEffect(() => {
     socket.current.emit("addUser", ownerInfo._id);
-    socket.current.on("getUsers", (users) => {
-      console.log(
-        "🚀 ~ file: ChatPage.js ~ line 38 ~ socket.current.on ~ users",
-        users
-      );
-    });
   }, [ownerInfo]);
 
   return (
@@ -60,11 +47,7 @@ function ChatPage() {
           <div className="col-span-3 bg-white backdrop-filter backdrop-blur-lg w-full bg-opacity-20 h-auto rounded-md shadow-2xl">
             <h1 className="pt-4 pl-4 text-4xl text-white">People</h1>
 
-            <PeopleList
-              ownerInfo={ownerInfo}
-              peopleList={peopleList}
-              conversation={conversation}
-            />
+            <PeopleList ownerInfo={ownerInfo} peopleList={peopleList} />
           </div>
           <div className="col-span-3 bg-white backdrop-filter backdrop-blur-lg w-full bg-opacity-20 h-auto rounded-md shadow-2xl">
             <h1 className="pt-4 pl-4 text-4xl text-white">Conversation</h1>
@@ -73,14 +56,8 @@ function ChatPage() {
                 <div
                   key={index}
                   onClick={() => {
-                    dispatch({
-                      type: "SET_CONVERSATION_ID",
-                      data: c,
-                    });
-                    dispatch({
-                      type: "GET_MESSAGES_API",
-                      data: c,
-                    });
+                    dispatch(setConversationIdAction(c));
+                    dispatch(getMessagesAction(c));
                     setCurrentFriend(c);
                   }}
                 >

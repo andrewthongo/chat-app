@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { setNameAction } from "../../../redux/actions/ConservationAction";
 
 function Conversations({ conversation, owner, peopleList }) {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ function Conversations({ conversation, owner, peopleList }) {
   return (
     <div
       onClick={() => {
-        dispatch({ type: "SET_NAME", data: user[0] });
+        dispatch(setNameAction(user[0]));
       }}
       className="divide-y w-auto p-2 mx-2 flex flex-col gap-y-3 mt-5 cursor-pointer overflow-y-auto hover:bg-white hover:backdrop-filter hover:backdrop-blur-xl hover:bg-opacity-50 focus:bg-white focus:backdrop-filter focus:backdrop-blur-xl focus:bg-opacity-50 rounded-lg"
     >

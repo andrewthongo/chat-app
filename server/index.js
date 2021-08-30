@@ -9,11 +9,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
+const server = require("http").createServer(app);
 const PORT = process.env.PORT || 5000;
 const URI = process.env.DATABASE;
 
-const io = require("socket.io")(7000, {
+const io = require("socket.io")(server, {
   cors: {
+    // origin: ["https://heuristic-bose-66c789.netlify.app"],
     origin: ["http://localhost:3000"],
   },
 });
@@ -69,7 +71,7 @@ mongoose
   })
   .then(() => {
     console.log("Connected");
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })

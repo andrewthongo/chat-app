@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { registerAction } from "../../../redux/actions/ProjectAction";
+import { registerAction } from "../../../redux/actions/UsersAction";
 
 function RegisterForm() {
   const dispatch = useDispatch();

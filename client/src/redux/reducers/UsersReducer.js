@@ -1,3 +1,5 @@
+import { GET_OWNER_INFO, GET_USERS } from "../constant/ProjectConstant";
+
 const initialState = {
   peopleList: [],
   ownerInfo: [],
@@ -5,9 +7,9 @@ const initialState = {
 
 export const UsersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_USERS":
+    case GET_USERS:
       return { ...state, peopleList: action.data };
-    case "GET_OWNER_INFO":
+    case GET_OWNER_INFO:
       return { ...state, ownerInfo: action.data.user };
     default:
       return { ...state };
