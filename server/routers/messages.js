@@ -1,28 +1,11 @@
 const express = require("express");
-const Message = require("../models/Message");
+const controllers = require("../controllers/messages");
+const verifyToken = require("../middlewares/auth")
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  const newMessage = new Message(req.body);
+router.post("/", verifyToken, controllers.addMessage);
 
-  try {
-    const savedMessage = await newMessage.save();
-    res.status(200).json(savedMessage);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
-
-router.get("/:conversationId", async (req, res) => {
-  try {
-    const messages = await Message.find({
-      conversationId: req.params.conversationId,
-    });
-    res.status(200).json(messages);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-});
+router.get("/:conversationId", verifyToken, controllers.getMessage);
 
 module.exports = router;
