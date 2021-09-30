@@ -15,7 +15,7 @@ const URI = process.env.DATABASE;
 
 const io = require("socket.io")(server, {
   cors: {
-    // origin: ["https://heuristic-bose-66c789.netlify.app"],
+    //origin: ["https://amazing-curran-371b36.netlify.app"],
     origin: ["http://localhost:3000"],
   },
 });
